@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Game CS494</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+    <style>
+        body {
+    background-image: url(game/bg.png);
+    background-position: center top;
+    background-size: 75% auto;
+}
+
+.rainbow {
+  
+   /* Font options */
+  font-family: 'Pacifico', cursive;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  font-size:40px;
+  
+   /* Chrome, Safari, Opera */
+  -webkit-animation: rainbow 3s infinite; 
+  
+  /* Internet Explorer */
+  -ms-animation: rainbow 3s infinite;
+  
+  /* Standar Syntax */
+  animation: rainbow 3s infinite; 
+}
+
+/* Chrome, Safari, Opera */
+@-webkit-keyframes rainbow{
+  0%{color: orange;}	
+  10%{color: purple;}	
+	20%{color: red;}
+  30%{color: CadetBlue;}
+	40%{color: yellow;}
+  50%{color: coral;}
+	60%{color: green;}
+  70%{color: cyan;}
+  80%{color: DeepPink;}
+  90%{color: DodgerBlue;}
+	100%{color: orange;}
+}
+
+/* Internet Explorer */
+@-ms-keyframes rainbow{
+  0%{color: orange;}	
+  10%{color: purple;}	
+	20%{color: red;}
+	40%{color: yellow;}
+	60%{color: green;}
+	100%{color: orange;}
+}
+
+/* Standar Syntax */
+@keyframes rainbow{
+  0%{color: orange;}	
+  10%{color: purple;}	
+	20%{color: red;}
+	40%{color: yellow;}
+	60%{color: green;}
+	100%{color: orange;}
+}
+
+body{
+  background-color:#607D8B;
+}
+
+.container{
+  background-color:#E0F2F1;
+  padding:10px;
+  border:2px solid black;
+  border-radius:15px;
+}
+
+</style>
+</head>
+
+<body>
+
+
+
+    <div id="game">
+
+        <div class="row">
+
+            <div class="col-md-5">
+                <center>
+                    <div class="card-header">
+                        <h2>HERO</h2>
+                        <h1 class="my-0 font-weight-normal" style="text-shadow: 2px 2px blue;">HP: {{healthperson}}</h1>
+                    </div>
+
+                    <br><br>
+                    <h6 style="  text-shadow: 2px 2px red; ">{{da2}}</h6><br><br><br><br><br>
+
+                    <img :src="hero" :height="highero"><br>
+
+
+                </center>
+
+            </div>
+            <div class="col-md-2">
+                <center>
+
+                    <div class="card-header">
+                        <div class="rainbow">
+                            <h6>Welcome to GameCS494</h6>
+                        </div>
+                        <button id="atk" v-on:click="personattack" style="border-radius: 50%; 
+                        color: white;
+                        background-color: red;         
+                        margin: 4px 2px;"><img
+                                src="/game/atk2.png" width="50"><br>
+                            <div class="rainbow">
+                                <p style="font-size: 12px; ">Cooldown 1s</p>
+                            </div>
+                        </button>
+                        <button id="atkspe" v-on:click="personspecial" style="border-radius: 50%; 
+                        color: white;
+                        background-color:blue;         
+                        margin: 4px 2px;"><img
+                                src="/game/atk3.png" width="50"><br>
+                            <div class="rainbow">
+                                <p style="font-size: 12px; ">Cooldown 3s</p>
+                            </div>
+                        </button>
+
+
+                        <button v-on:click="newgame">{{ready}} </button>
+                    </div>
+                    <br>
+                    <div>
+                        <transition>
+                            <img v-show="isLoad" :src="url" width="85%" @load="loaded">
+                        </transition>
+
+                    </div>
+                    <br>
+                    <h1 class="rainbow" style="color:black; text-shadow: 2px 2px red;">{{msg}}</h1><br><br><br><br><br>
+
+
+                </center>
+            </div>
+            <div class="col-md-5">
+                <center>
+                    <div class="card-header">
+                        <h2>MONSTER</h2>
+                        <h1 class="my-0 font-weight-normal" style="text-shadow: 2px 2px red;">HP: {{healthcom}}</h1>
+                    </div>
+
+                    <br><br>
+                    <h6 style="  text-shadow: 2px 2px red; ">{{da}}</h6><br><br><br><br><br>
+                    <img :src="monste" :height="higcom">
+                </center>
+            </div>
+        </div>
+
+
+
+
+
+    </div>
+</body>
+
+</html>
+
+<script>
+    var lab2 = new Vue({
+        el: '#game',
+        data: {
+            ready: 'Start Game',
+            time: '0',
+            hero: '',
+            monste: '',
+            msg: '',
+            healthperson: '0',
+            healthcom: '0',
+            highero: '300',
+            higcom: '325',
+            da: '',
+            da2: '',
+            url: "",
+            atk: 'game/1.gif',
+            atk2: 'game/2.gif',
+            win: 'game/victory.gif',
+            rip: 'game/rip.png',
+            music: '',
+            isLoad: false
+        },
+        methods: {
+            newgame: function () {
+                this.ready = 'Restart';
+                this.healthcom = 100;
+                this.healthperson = 100;
+                this.da = '';
+                this.da2 = '';
+                this.msg = '';
+                this.url = '';
+                this.hero = 'game/c2.gif';
+                this.monste = 'game/c1.gif';
+                this.higcom = '325';
+                this.highero = '300';
+
+
+            },
+            personattack: function (min, max) {
+
+                if (this.healthperson > 0 && this.healthcom > 0) {
+                    this.heroattack = Math.max(Math.floor(Math.random() * 10) + 1, 3);
+                    this.healthcom = this.healthcom - this.heroattack;
+                    this.da = 'Hit!! -' + this.heroattack + '!!';
+                    this.isLoad = true
+                    this.$nextTick(() => {
+                        this.url = this.atk;
+                    })
+
+
+                    this.music = 'game/skillno.mp3';
+                    this.comattack = Math.max(Math.floor(Math.random() * 15) + 1, 5);
+                    this.healthperson = this.healthperson - this.comattack;
+                    this.da2 = 'Hit!! -' + this.comattack + '!!';
+                    this.highero = this.highero - this.comattack;
+                    this.higcom = this.higcom - this.heroattack;
+                }
+                if (this.healthcom <= 0 && this.healthperson > 0) {
+                    this.time = this.time - 1 + 2;
+                    this.monste = 'game/rip.png';
+                    this.msg = '!!Victory!!';
+                    this.healthcom = '0';
+                    this.isLoad = true
+                    this.$nextTick(() => {
+                        this.url = '';
+                    })
+
+                }
+                if (this.healthperson <= 0 && this.healthcom > 0) {
+                    this.healthperson = '0';
+                    this.hero = 'game/rip.png';
+                    this.msg = '!!Lose!!';
+
+                    this.isLoad = true
+                    this.$nextTick(() => {
+                        this.url = '';
+                    })
+                }
+                if (this.healthperson <= 0 && this.healthcom <= 0) {
+                    this.healthperson = '0';
+                    this.healthcom = '0';
+                    this.hero = 'game/rip.png';
+                    this.monste = 'game/rip.png';
+                    this.msg = '!!Draw!!';
+
+                    this.isLoad = true
+                    this.$nextTick(() => {
+                        this.url = '';
+                    })
+                }
+
+            },
+            personspecial: function (min, max) {
+                if (this.healthperson > 0 && this.healthcom > 0) {
+                    this.herospecialattack = Math.max(Math.floor(Math.random() * 20) + 1, 10);
+                    this.healthcom = this.healthcom - this.herospecialattack;
+                    this.da = 'Special Attack! Hit!! -' + this.herospecialattack + '!!';
+                    this.isLoad = true
+                    this.$nextTick(() => {
+                        this.url = this.atk2;
+                    })
+                    this.music = 'game/skill.mp3';
+                    this.comattack = Math.max(Math.floor(Math.random() * 15) + 1, 5);
+                    this.healthperson = this.healthperson - this.comattack;
+                    this.da2 = 'Hit!! -' + this.comattack + '!!';
+                    this.highero = this.highero - this.comattack;
+                    this.higcom = this.higcom - this.herospecialattack;
+                }
+                if (this.healthcom <= 0 && this.healthperson > 0) {
+                    this.time = this.time - 1 + 2;
+                    this.monste = 'game/rip.png';
+                    this.msg = '!!Victory!!';
+                    this.healthcom = '0';
+                    this.isLoad = true
+                    this.$nextTick(() => {
+                        this.url = '';
+                    })
+                }
+                if (this.healthperson <= 0 && this.healthcom > 0) {
+                    this.healthperson = '0';
+                    this.msg = '!!Lose!!';
+                    this.hero = 'game/rip.png';
+
+                    this.isLoad = true
+                    this.$nextTick(() => {
+                        this.url = '';
+                    })
+                }
+                if (this.healthperson <= 0 && this.healthcom <= 0) {
+                    this.healthperson = '0';
+                    this.healthcom = '0';
+                    this.hero = 'game/rip.png';
+                    this.monste = 'game/rip.png';
+                    this.msg = '!!Draw!!';
+
+                    this.isLoad = true
+                    this.$nextTick(() => {
+                        this.url = '';
+                    })
+                }
+            },
+            loaded() {
+
+                this.isLoad = true
+            },
+            cooldowntime: function () {
+                this.time = this.time - 1;
+            }
+
+
+        }
+
+
+    })
+</script>
+<script type="text/javascript">
+    $('#atkspe').click(function () {
+        var btn = $(this);
+        btn.prop('disabled', true);
+        setTimeout(function () {
+            btn.prop('disabled', false);
+        }, 3000);
+    });
+    $('#atk').click(function () {
+        var btn = $(this);
+        btn.prop('disabled', true);
+        setTimeout(function () {
+            btn.prop('disabled', false);
+        }, 1000);
+    });
+</script>
